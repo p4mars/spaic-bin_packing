@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>spatial_ai_simulation</name>
+  <version>0.0.1</version>
+  <description>Gazebo simulation world for the SpatialAI station layout.</description>
+  <maintainer email="user@example.com">spatial-ai</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <exec_depend>controller_manager</exec_depend>
+  <exec_depend>gazebo_ros</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>launch_xml</exec_depend>
+  <exec_depend>mirte_gazebo</exec_depend>
+  <exec_depend>mirte_master_description</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>twist_mux</exec_depend>
+  <exec_depend>xacro</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
