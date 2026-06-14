@@ -3,13 +3,13 @@
 <package format="3">
   <name>mirte_driving</name>
   <version>1.0.0</version>
-  <description>Team Member C — navigation/mapping/shuttle ONLY.
+  <description>Navigation/mapping/shuttle ONLY.
     SLAM (slam_toolbox) + Nav2 A&#8596;B marker shuttle: zone_detector finds tag A
     (id 100) and the Zone B pair midpoint (ids 101/102); shuttle_manager drives
     the legs (A at ~1 m + camera fine-alignment, B at ~0.3 m) and exposes the
     merge hooks for the A-grasp (mirte_perception, laptop) and B-placement
     (mirte_placement) stages.</description>
-  <maintainer email="guilherme6henriques@gmail.com">group3 spatial-ai</maintainer>
+  <maintainer email="guilherme6henriques@gmail.com, matildersbarros@gmail.com">group3 spatial-ai</maintainer>
   <license>TODO: License declaration</license>
 
   <depend>rclpy</depend>
