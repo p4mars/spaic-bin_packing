@@ -1,0 +1,40 @@
+
+<!--
+  nav2_minimal_tree.xml — the behaviour tree bt_navigator runs for every
+  NavigateToPose goal shuttle_manager sends.  It is the "what to do, and what to
+  do when it goes wrong" layer of the navigation stack: PipelineSequence =
+  normal driving (plan + follow); RecoveryNode wraps it so a failure triggers
+  the fallback (back up + wait) and retries, up to 6 times.
+
+  Replan the global path at 2 Hz (RateController) so a newly-seen obstacle is
+  routed around quickly; the controller (collision-check ON) follows it and
+  stops if something is on the path.
+
+  IMPORTANT: NO ClearEntireCostmap anywhere.  Clearing the costmap deletes every
+  marked obstacle (the SLAM-mapped ones AND live ones), so after a clear the
+  robot replans on a blank map and drives straight through obstacles it was
+  avoiding (observed: it "forgot" a book it had been avoiding and ran it over).
+  The obstacle layer already clears cells that the lidar sees become free
+  (raytracing), so a removed obstacle still disappears normally — we just never
+  wipe everything.  On failure we only back up a little and wait, then retry,
+  WITHOUT forgetting obstacles.
+-->
+<root main_tree_to_execute="MainTree">
+  <BehaviorTree ID="MainTree">
+    <RecoveryNode number_of_retries="6" name="NavigateRecovery">
+      <PipelineSequence name="NavigateWithReplanning">
+        <RateController hz="2.0">
+          <ComputePathToPose goal="{goal}" path="{path}" planner_id="GridBased"/>
+        </RateController>
+        <FollowPath path="{path}" controller_id="FollowPath"/>
+      </PipelineSequence>
+      <ReactiveFallback name="RecoveryFallback">
+        <GoalUpdated/>
+        <RoundRobin name="RecoveryActions">
+          <BackUp backup_dist="0.15" backup_speed="0.05"/>
+          <Wait wait_duration="2.0"/>
+        </RoundRobin>
+      </ReactiveFallback>
+    </RecoveryNode>
+  </BehaviorTree>
+</root>

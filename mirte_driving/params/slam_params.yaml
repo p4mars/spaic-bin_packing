@@ -1,0 +1,63 @@
+# ════════════════════════════════════════════════════════════════════════════
+# slam_params.yaml — the MAPPING brain's configuration (slam_toolbox, sync node).
+#
+# This configures the single SLAM node that builds the map and localises the
+# robot in it.  It is the heart of the mapping half of mirte_driving_3.
+#
+# DATA LINKS (hardware → result):
+#   /scan_filtered (← scan_filter ← lidar)  ─► SLAM scan input (scan_topic)
+#   odom→base_link TF (← robot's base controller) ─► SLAM's odometry prior
+#        │
+#        ▼  scan-matching graph SLAM
+#   /map (OccupancyGrid)        ─► Nav2 global_costmap static_layer, shuttle_manager
+#   map→odom TF (50 Hz)         ─► THE localisation correction every node reads as
+#                                  "where is the robot" (map→odom→base_link)
+#
+# WHY THESE VALUES (see also the contingency note below):
+#   - mode mapping            : build the map live (no prior map; unknown arena).
+#   - use_scan_matching true  : mecanum wheel odometry drifts badly, worst while
+#                               rotating — scan-matching pulls map→odom back onto
+#                               the walls.  This is why search/turn spins are slow.
+#   - scan_topic /scan_filtered : the self-return-filtered lidar (NOT raw /scan).
+#   - resolution 0.02, every scan: the PROVEN-good config on this SBC.
+# ════════════════════════════════════════════════════════════════════════════
+# SLAM config — PARITY with mirte_navigation/params/slam_params.yaml, the
+# config PROVEN to map well on this robot (minimal_slam_launch).  Do NOT
+# "CPU-optimize" this file again: the previous fork of it (async node,
+# resolution 0.05, throttled scans) is exactly what smeared rotated copies of
+# the room into the map and broke Nav2 planning.
+#
+# CPU contingency — apply ONLY if slam_toolbox shows SUSTAINED "Message Filter
+# dropping message ... queue is full" spam and the map visibly lags the robot,
+# and in this order:
+#   1. resolution: 0.03
+#   2. map_update_interval: 2.0
+# Never revert to the async node or throttle_scans: 2 — dropped scans during
+# spins are what lose the matcher's lock.
+slam_toolbox:
+  ros__parameters:
+    # use_sim_time comes from the launch (sim dict, listed after this file,
+    # overrides; real robot = false).
+    mode: "mapping"
+    resolution: 0.02              # proven on this SBC by minimal_slam
+    map_update_interval: 1.0
+    # Mecanum odometry drifts (worst while rotating in place) — scan matching
+    # is what pulls map->odom back onto the walls.
+    use_scan_matching: true
+    map_topic: /map
+    scan_topic: /scan_filtered
+
+    base_frame: base_link         # exists in sim and real; matches Nav2 +
+    odom_frame: odom              # shuttle_manager
+    map_frame: map
+
+    transform_publish_period: 0.02   # 50 Hz map→odom transform
+    transform_timeout: 0.5
+
+    # Scan matching thresholds (everything else: stock defaults, like the
+    # proven config).
+    minimum_travel_distance: 0.05    # metres before adding a new scan
+    minimum_travel_heading: 0.1      # radians before adding a new scan
+    throttle_scans: 1                # process every scan
+
+    debug_logging: false
