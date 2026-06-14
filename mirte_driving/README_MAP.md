@@ -6,7 +6,7 @@ hand-offs) is built on top of this. The *navigation* half — driving, obstacle
 avoidance, the costmaps, the inflation radius — is a separate document,
 **README_NAV.md**.
 
-> **Tell-the-professor summary (mapping):** the only mapping files *we* wrote are
+> Only mapping files *we* wrote are
 > **`scan_filter.py`** (one node) and **`slam_params.yaml`** (config). The actual
 > SLAM algorithm is `slam_toolbox`, an off-the-shelf package we installed and
 > configured but did **not** write. See the ownership table in §7.
