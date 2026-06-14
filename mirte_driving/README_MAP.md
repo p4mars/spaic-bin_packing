@@ -1,6 +1,6 @@
-# README_MAP — Mapping & Localisation (`mirte_driving_3`)
+# README_MAP — Mapping & Localisation
 
-Mapping half of `mirte_driving_3`. This document explains, from the ground up,
+This document explains, from the ground up,
 **how the robot builds a map of an unknown room and tracks where it is inside
 it**, and **which parts are custom project code versus standard software that was
 already available**. The navigation half (driving, obstacle avoidance, costmaps,
