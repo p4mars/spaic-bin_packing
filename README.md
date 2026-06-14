@@ -1,4 +1,4 @@
-# mirte_shuttle — AE4ASM527 Group 3
+# AE4ASM527 Group 3
 
 Autonomous **A↔B marker-shuttle** robot built on the MIRTE Master platform
 (ROS 2 Humble). Dropped into an **unknown arena**, the robot builds a map from
