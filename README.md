@@ -1,4 +1,4 @@
-# AE4ASM527 Group 3
+# mirte_shuttle — AE4ASM527 Group 3
 
 Autonomous **A↔B marker-shuttle** robot built on the MIRTE Master platform
 (ROS 2 Humble). Dropped into an **unknown arena**, the robot builds a map from
@@ -14,7 +14,10 @@ Unlike a "map first, then drive in a saved map" workflow, this project maps **li
 during the mission** — there is no separate mapping phase and no saved map file
 (the arena is unknown at start).
 
-> The project is split across **three packages by role**.
+> The project is split across **three packages by role**. This file is the
+> project-level overview; two deeper dives live alongside it:
+> **[README_MAP.md](README_MAP.md)** (mapping) and **[README_NAV.md](README_NAV.md)**
+> (navigation).
 
 ---
 
@@ -151,26 +154,26 @@ during the mission** — there is no separate mapping phase and no saved map fil
 
 | Package | Directory | Runs on | Role |
 |---|---|---|---|
-| **`mirte_driving_3`** | `src/mirte_driving` | robot + laptop | Mapping (SLAM feed) + Nav2 config + zone detection + the mission FSM that orchestrates everything |
+| **`mirte_driving`** | `src/mirte_driving` | robot | Mapping (SLAM feed) + Nav2 config + zone detection + the mission FSM that orchestrates everything |
 | **`mirte_placement`** | `src/mirte_placement` | robot | **Zone B**: precise ArUco dock (`marker_navigator`) + box lay-down/stacking (`box_placer`) |
 | **`mirte_perception`** | `src/mirte-ros-packages/mirte_perception` | laptop | **Zone A**: YOLOv8 handle detection (`perception_node`) + visual-servo grasp (`grasp_node`, service `/grasp_handle`) |
 
 Provenance, at a glance (full breakdown in README_MAP §7 and README_NAV §2):
 
 - **Custom project code:** `scan_filter`, `zone_detector`, `shuttle_manager`
-  (in `mirte_driving_3`); `marker_navigator`, `box_placer` (in `mirte_placement`);
+  (in `mirte_driving`); `marker_navigator`, `box_placer` (in `mirte_placement`);
   `perception_node`, `grasp_node` (in `mirte_perception`); all launch files.
-- **Reference config (adapted):** the SLAM and Nav2 parameter files and the
-  behaviour tree, based on the `mirte_navigation` reference.
+- **From the `mirte_navigation` reference (adapted):** the behaviour tree
+  (`nav2_minimal_tree.xml`, shipped by the reference) and the overall SLAM/Nav2
+  *approach*. The parameter files (`slam_params.yaml`, `exploration_nav2_params.yaml`)
+  are project-authored, modelled on the reference's minimal configs and tuned for
+  this robot. The `scan_filter` / `/scan_filtered` step is a project addition — the
+  reference mapped from the raw `/scan`.
 - **Installed / standard (apt):** `slam_toolbox` (SLAM engine), the Nav2 stack,
   `tf2_ros`, `pointcloud_to_laserscan`, YOLO (`ultralytics`), `ikpy`.
 - **Robot vendor (preinstalled):** the base controller (`odom`, `odom→base_link`
   TF), `robot_state_publisher` (sensor-mount TFs), the lidar / camera / arm
   drivers.
-
-> **Package name vs. directory:** the navigation package's directory is
-> `mirte_driving` but its ROS package **name** is `mirte_driving_3` — all
-> `ros2 launch` / `ros2 run` commands below use the name `mirte_driving_3`.
 
 ---
 
@@ -188,7 +191,7 @@ sudo apt install -y \
   python3-opencv \
   ros-humble-cv-bridge
 ```
-`mirte_driving_3` needs `slam_toolbox` + Nav2; `zone_detector` and
+`mirte_driving` needs `slam_toolbox` + Nav2; `zone_detector` and
 `marker_navigator` need OpenCV (`cv2.aruco`).
 
 ### On the laptop (for Zone A grasping, `grasp_at_a`)
@@ -213,7 +216,7 @@ weights are elsewhere.
 cd ~/spatial-ai/ws
 
 # Robot packages
-colcon build --packages-select mirte_driving_3 mirte_placement --symlink-install
+colcon build --packages-select mirte_driving mirte_placement --symlink-install
 
 # Laptop (Zone A)
 colcon build --packages-select mirte_perception --symlink-install
@@ -268,21 +271,21 @@ FSM all come up together and the map is built live.
 
 ```bash
 # ── ROBOT ──
-ros2 launch mirte_driving_3 mission.launch.py
+ros2 launch mirte_driving mission.launch.py
 ```
 By default zone detection is **offloaded to the laptop**, so also start the
 detector there (same network + same `ROS_DOMAIN_ID`):
 ```bash
 # ── LAPTOP ──
-ros2 launch mirte_driving_3 detector.launch.py
+ros2 launch mirte_driving detector.launch.py
 ```
 
 **Full merged mission** (handle grasp at A + box place at B):
 ```bash
 # ── ROBOT ──
-ros2 launch mirte_driving_3 mission.launch.py dock_at_b:=true grasp_at_a:=true
+ros2 launch mirte_driving mission.launch.py dock_at_b:=true grasp_at_a:=true
 # ── LAPTOP ── zone detection
-ros2 launch mirte_driving_3 detector.launch.py
+ros2 launch mirte_driving detector.launch.py
 # ── LAPTOP ── Zone A grasp stack (YOLO + IK)
 ros2 launch mirte_perception grasp.launch.py
 ```
@@ -309,10 +312,10 @@ ros2 topic pub /mirte_base_controller/cmd_vel geometry_msgs/msg/Twist "{}" --onc
 **Navigation-only** (pure A↔B shuttle, wheels + camera align, no arm/grasp/place):
 ```bash
 # robot
-ros2 launch mirte_driving_3 mission.launch.py \
+ros2 launch mirte_driving mission.launch.py \
   dock_at_b:=false grasp_at_a:=false arm_mimic:=false round_trips:=2
 # laptop
-ros2 launch mirte_driving_3 detector.launch.py
+ros2 launch mirte_driving detector.launch.py
 ```
 
 **Verify mapping alone** (drive by hand, watch the map build):
@@ -433,7 +436,7 @@ ros2 node list | grep -E "marker_navigator|box_placer"
 ## 11. File Reference
 
 ```
-src/mirte_driving/                      package name: mirte_driving_3   (robot)
+src/mirte_driving/                      package name: mirte_driving   (robot)
 ├── mirte_driving/
 │   ├── scan_filter.py        lidar self-return filter → /scan_filtered     [MAPPING]
 │   ├── zone_detector.py      ArUco A/B detection → /zone_a_pose,/zone_b_pose [NAV]
@@ -456,7 +459,7 @@ src/mirte_placement/                    package: mirte_placement        (robot, 
     ├── marker_navigator.py   precise ArUco dock + drive-back + 180° turn
     └── box_placer.py         arm lower / release / stack / return-home
 
-src//mirte_perception/  package: mirte_perception     (laptop, Zone A)
+src/mirte-ros-packages/mirte_perception/  package: mirte_perception     (laptop, Zone A)
 ├── mirte_perception/
 │   ├── perception_node.py    YOLOv8 handle/box detection → object_markers
 │   └── grasp_node.py         visual-servo + IK grasp; service /grasp_handle
@@ -471,19 +474,20 @@ src//mirte_perception/  package: mirte_perception     (laptop, Zone A)
 ```bash
 # ── Build ──
 cd ~/spatial-ai/ws
-colcon build --packages-select mirte_driving_3 mirte_placement --symlink-install
+colcon build --packages-select mirte_driving mirte_placement --symlink-install
 source install/setup.bash
 
 # ── Navigation-only shuttle (robot + laptop detector) ──
-ros2 launch mirte_driving_3 mission.launch.py arm_mimic:=false round_trips:=2   # robot
-ros2 launch mirte_driving_3 detector.launch.py                                  # laptop
+ros2 launch mirte_driving mission.launch.py arm_mimic:=false round_trips:=2   # robot
+ros2 launch mirte_driving detector.launch.py                                  # laptop
 
 # ── Full mission: grasp at A + place at B ──
-ros2 launch mirte_driving_3 mission.launch.py dock_at_b:=true grasp_at_a:=true  # robot
-ros2 launch mirte_driving_3 detector.launch.py                                  # laptop
+ros2 launch mirte_driving mission.launch.py dock_at_b:=true grasp_at_a:=true  # robot
+ros2 launch mirte_driving detector.launch.py                                  # laptop
 ros2 launch mirte_perception grasp.launch.py                                    # laptop
 
 # ── Emergency stop ──
 ros2 topic pub /mirte_base_controller/cmd_vel geometry_msgs/msg/Twist "{}" --once
 ```
 
+Deeper detail: **[README_MAP.md](README_MAP.md)** · **[README_NAV.md](README_NAV.md)**
