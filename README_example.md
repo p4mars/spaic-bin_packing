@@ -112,7 +112,7 @@ Please update this section when adding a new package.
 
 | Package Name | Owner | Description |
 |---|---|---|
-| `package_1` | Member 1 | Short description of this package |
+| `mirte_driving` | Gui & Mati | Mapping + Navigation |
 | `package_2` | Member 2 | Short description of this package |
 | `package_3` | Member 3 | Short description of this package |
 
