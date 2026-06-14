@@ -56,11 +56,6 @@ MIN_RANGE = 0.25  # metres — LIDAR sits at base_link (x=+0.10, y=0), 10 cm
 class ScanFilter(Node):
     def __init__(self):
         super().__init__('scan_filter')
-        # Self-return cutoff as a parameter: raise it (e.g. 0.40) on a unit
-        # whose ARM/GRIPPER sits in the lidar plane 0.25-0.35 m ahead — those
-        # returns land INSIDE the 0.32 m footprint and make Nav2 believe the
-        # robot is permanently in collision (instant 'collision ahead', backup
-        # fails too).
         self._min_range = float(self.declare_parameter('min_range', MIN_RANGE).value)
         self._pub = self.create_publisher(LaserScan, '/scan_filtered', 10)
         # Lidars publish with SensorData QoS (BEST_EFFORT).  A default RELIABLE
