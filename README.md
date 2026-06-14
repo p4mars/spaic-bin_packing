@@ -151,7 +151,7 @@ during the mission** — there is no separate mapping phase and no saved map fil
 
 | Package | Directory | Runs on | Role |
 |---|---|---|---|
-| **`mirte_driving_3`** | `src/mirte_driving` | robot | Mapping (SLAM feed) + Nav2 config + zone detection + the mission FSM that orchestrates everything |
+| **`mirte_driving_3`** | `src/mirte_driving` | robot + laptop | Mapping (SLAM feed) + Nav2 config + zone detection + the mission FSM that orchestrates everything |
 | **`mirte_placement`** | `src/mirte_placement` | robot | **Zone B**: precise ArUco dock (`marker_navigator`) + box lay-down/stacking (`box_placer`) |
 | **`mirte_perception`** | `src/mirte-ros-packages/mirte_perception` | laptop | **Zone A**: YOLOv8 handle detection (`perception_node`) + visual-servo grasp (`grasp_node`, service `/grasp_handle`) |
 
