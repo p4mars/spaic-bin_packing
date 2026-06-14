@@ -39,17 +39,16 @@ slam_toolbox:
   ros__parameters:
     # use_sim_time comes from the launch (sim dict, listed after this file,
     # overrides; real robot = false).
-    mode: "mapping"
-    resolution: 0.02              # proven on this SBC by minimal_slam
+    mode: "mapping" # instead of localization (existing saved map)
+    resolution: 0.02 # proven on this SBC by minimal_slam (2cmx2cm)
     map_update_interval: 1.0
-    # Mecanum odometry drifts (worst while rotating in place) — scan matching
-    # is what pulls map->odom back onto the walls.
     use_scan_matching: true
+    # Mecanum odometry drifts (worst while rotating in place) — scan matching
+    # is what pulls map->odom back onto the walls. Correction of odom.
     map_topic: /map
     scan_topic: /scan_filtered
-
-    base_frame: base_link         # exists in sim and real; matches Nav2 +
-    odom_frame: odom              # shuttle_manager
+    base_frame: base_link # exists in sim and real; matches Nav2 +
+    odom_frame: odom # shuttle_manager
     map_frame: map
 
     transform_publish_period: 0.02   # 50 Hz map→odom transform
