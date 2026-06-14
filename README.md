@@ -456,7 +456,7 @@ src/mirte_placement/                    package: mirte_placement        (robot, 
     ├── marker_navigator.py   precise ArUco dock + drive-back + 180° turn
     └── box_placer.py         arm lower / release / stack / return-home
 
-src/mirte-ros-packages/mirte_perception/  package: mirte_perception     (laptop, Zone A)
+src//mirte_perception/  package: mirte_perception     (laptop, Zone A)
 ├── mirte_perception/
 │   ├── perception_node.py    YOLOv8 handle/box detection → object_markers
 │   └── grasp_node.py         visual-servo + IK grasp; service /grasp_handle
@@ -487,4 +487,3 @@ ros2 launch mirte_perception grasp.launch.py                                    
 ros2 topic pub /mirte_base_controller/cmd_vel geometry_msgs/msg/Twist "{}" --once
 ```
 
-Deeper detail: **[README_MAP.md](README_MAP.md)** · **[README_NAV.md](README_NAV.md)**
