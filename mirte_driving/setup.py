@@ -20,8 +20,8 @@ setup(
     install_requires=['setuptools'],
     zip_safe=True,
     maintainer='group3 spatial-ai',
-    maintainer_email='guilherme6henriques@gmail.com',
-    description='Navigation/mapping + A-B marker shuttle (Team Member C).',
+    maintainer_email='guilherme6henriques@gmail.com, matildersbarros@gmail.com',
+    description='Navigation/mapping + A-B marker shuttle.',
     license='TODO: License declaration',
     tests_require=['pytest'],
     # .py-suffixed entry points to match the team convention.
