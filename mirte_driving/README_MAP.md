@@ -174,7 +174,7 @@ mapping output.
 
 ---
 
-## 5. `slam_params.yaml` — the SLAM settings and the reasoning *(WE wrote this)*
+## 5. `slam_params.yaml` — the SLAM settings and the reasoning 
 
 This file is just a list of values handed to `slam_toolbox` at start-up. The ones
 that matter:
