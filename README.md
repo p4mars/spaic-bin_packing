@@ -14,10 +14,7 @@ Unlike a "map first, then drive in a saved map" workflow, this project maps **li
 during the mission** — there is no separate mapping phase and no saved map file
 (the arena is unknown at start).
 
-> The project is split across **three packages by role**. This file is the
-> project-level overview; two deeper dives live alongside it:
-> **[README_MAP.md](README_MAP.md)** (mapping) and **[README_NAV.md](README_NAV.md)**
-> (navigation).
+> The project is split across **three packages by role**.
 
 ---
 
