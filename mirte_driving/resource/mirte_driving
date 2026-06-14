@@ -1,1 +1,1 @@
-#For a package named X, there must be a file at resource/X inside the source folder. 
+# For a package named X, there must be a file at resource/X inside the source folder, effectively "registering" the package
