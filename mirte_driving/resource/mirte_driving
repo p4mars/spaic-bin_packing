@@ -1,0 +1,1 @@
+# When ROS 2 builds a package, it needs a way to know the package exists on the system. It does this through a file index called ament_index — basically a directory that acts like a registry of all installed packages. For a package named X, there must be a file at resource/X inside the source folder.
