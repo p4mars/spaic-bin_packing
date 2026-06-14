@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
 scan_filter.py — LIDAR CLEAN-UP, built for this project to handle the ARM.
-
 ═══════════════════════════════════════════════════════════════════════════════
 ROLE
 ═══════════════════════════════════════════════════════════════════════════════
@@ -39,10 +38,11 @@ LINKS / WHY:
   - raytrace_min_range in the Nav2 costmaps MUST match this cutoff, or obstacles
     inside the blind zone get erased right as the robot reaches them.
 """
-import rclpy
+
+import rclpy #  Python library for ROS 2
 from rclpy.node import Node
-from rclpy.qos import qos_profile_sensor_data
-from sensor_msgs.msg import LaserScan
+from rclpy.qos import qos_profile_sensor_data #Quality of Service
+from sensor_msgs.msg import LaserScan #Message type Lidar uses
 
 MIN_RANGE = 0.25  # metres — LIDAR sits at base_link (x=+0.10, y=0), 10 cm
                   # forward of robot centre.  Self-return distances:
@@ -51,20 +51,23 @@ MIN_RANGE = 0.25  # metres — LIDAR sits at base_link (x=+0.10, y=0), 10 cm
                   #   right wheels : 0.13 m
                   #   chassis front: 0.04 m
                   # 0.25 m clears all self-returns in every direction.
-
+                  # In the actual mission this gets overridden to 0.40 m because the arm sticks out further.
 
 class ScanFilter(Node):
     def __init__(self):
         super().__init__('scan_filter')
         self._min_range = float(self.declare_parameter('min_range', MIN_RANGE).value)
-        self._pub = self.create_publisher(LaserScan, '/scan_filtered', 10)
+        self._pub = self.create_publisher(LaserScan, '/scan_filtered', 10) 
+        # publishes /scan_filtered topic. Queue size of 10.
+        self.create_subscription(LaserScan, '/scan', self._cb, qos_profile_sensor_data)
+        # subscribes to /scan, applying the function self._cb to it
         # Lidars publish with SensorData QoS (BEST_EFFORT).  A default RELIABLE
         # subscriber receives NOTHING from a BEST_EFFORT publisher (and gives no
         # error) — which silently starves SLAM.  Subscribe with sensor QoS so we
         # match any lidar (sim or the real MIRTE).
-        self.create_subscription(LaserScan, '/scan', self._cb, qos_profile_sensor_data)
         self.get_logger().info(f'Filtering scan readings below {self._min_range} m')
 
+    # All data is unchanged except for the range_min and ranges
     def _cb(self, msg):
         out = LaserScan()
         out.header = msg.header
@@ -77,17 +80,17 @@ class ScanFilter(Node):
         out.range_max = msg.range_max
         out.ranges = tuple(
             r if r >= self._min_range else float('inf') for r in msg.ranges
-        )
+        ) # inf means nothing detected; tuple is a list of values that cannot be changed after creation
         out.intensities = msg.intensities
         self._pub.publish(out)
 
 
 def main(args=None):
-    rclpy.init(args=args)
-    node = ScanFilter()
-    rclpy.spin(node)
-    node.destroy_node()
-    rclpy.shutdown()
+    rclpy.init(args=args) #connecion to ROS2
+    node = ScanFilter() #creates node
+    rclpy.spin(node) #every time a new /scan message arrives, it calls _cb
+    node.destroy_node() #node is cleared when  Ctrl+C
+    rclpy.shutdown() #disconnect from ROS2
 
 
 if __name__ == '__main__':
