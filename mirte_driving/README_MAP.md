@@ -132,7 +132,7 @@ mapping output.
 
 ## 4. The mapping nodes, explained
 
-### `scan_filter.py` — the lidar clean-up node *(WE wrote this)*
+### `scan_filter.py` — the lidar clean-up node 
 - **What kind of thing it is:** one node, in our package.
 - **Subscribes to** the topic `/scan` (message type `sensor_msgs/LaserScan` — a
   ring of distance readings from the lidar). It listens with a setting called
@@ -154,7 +154,7 @@ mapping output.
   navigation setting), otherwise obstacles in that close-in blind ring get erased
   as the robot approaches them.
 
-### `slam_toolbox` (its sync node) — the SLAM engine *(installed, NOT ours)*
+### `slam_toolbox` (its sync node) — the SLAM engine *(installed)*
 - **What kind of thing it is:** a node from an off-the-shelf package
   (`ros-humble-slam-toolbox`, installed with `apt`). We **configured** it; we did
   **not** write it.
