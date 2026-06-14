@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-shuttle_manager.py — the MISSION BRAIN of mirte_driving (Team Member C).
+shuttle_manager.py — the MISSION BRAIN of mirte_driving .
 
 ═══════════════════════════════════════════════════════════════════════════════
 ROLE
