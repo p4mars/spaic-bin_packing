@@ -100,14 +100,6 @@ publish none of them ourselves**:
   description (the URDF model — where the lidar and camera are bolted on) and
   publishes those fixed offsets as transforms. We do **not** publish this either.
 
-> **Important history (why this README used to mention extra nodes).** Earlier we
-> ran a small node (`odom_to_tf`) and two hand-typed mount transforms to provide
-> `odom → base_link` and `base_link → laser/camera` ourselves. It turned out the
-> robot already publishes all of those. Having **two** programs publish the *same*
-> transform makes TF flip-flop between them ("`TF_OLD_DATA`" warnings) and the
-> robot once drove into a wall because of it. **Those duplicates have now been
-> deleted.** We rely entirely on the robot's own bring-up for `odom → base_link`
-> and the sensor mounts. Mapping owns only the scan cleaning and the SLAM config.
 
 ---
 
