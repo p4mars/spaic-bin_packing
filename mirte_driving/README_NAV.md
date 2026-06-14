@@ -1,13 +1,13 @@
 # README_NAV — Navigation & the A↔B Shuttle (`mirte_driving_3`)
 
-**Team Member C, navigation half.** This document explains **how the robot decides
-where to go, plans a path that won't hit anything, and drives it** — the marker
+How the robot decides
+where to go, plans a path that won't hit anything, and drives it — the marker
 (ArUco) zone detection, the Nav2 navigation stack, the mission's decision logic,
 and the camera fine-alignment. It builds on the *mapping* half in
 **README_MAP.md** — read that first, because navigation is meaningless without the
 map and the position estimate that mapping produces.
 
-> **Tell-the-professor summary (navigation):** the navigation files *we* wrote are
+> We wrote 
 > two nodes — **`zone_detector.py`** and **`shuttle_manager.py`** — plus three
 > configuration files: **`exploration_nav2_params.yaml`**, the behaviour-tree
 > **`nav2_minimal_tree.xml`**, and the launch files. The path-planning and
