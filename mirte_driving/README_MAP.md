@@ -1,8 +1,7 @@
 # README_MAP — Mapping & Localisation (`mirte_driving_3`)
 
-**Team Member C, mapping half.** This document explains, from the ground up, **how
-the robot builds a map of an unknown room and keeps track of where it is inside
-it**. Everything else in the project (navigating, finding the markers, the arm
+How the robot builds a map of an unknown room and keeps track of where it is inside
+it. Everything else in the project (navigating, finding the markers, the arm
 hand-offs) is built on top of this. The *navigation* half — driving, obstacle
 avoidance, the costmaps, the inflation radius — is a separate document,
 **README_NAV.md**.
