@@ -9,7 +9,7 @@
     the legs (A at ~1 m + camera fine-alignment, B at ~0.3 m) and exposes the
     merge hooks for the A-grasp (mirte_perception, laptop) and B-placement
     (mirte_placement) stages.</description>
-  <maintainer email="guilherme6henriques@gmail.com">group3 spatial-ai</maintainer>
+  <maintainer email="guilherme6henriques@gmail.com, matildersbarros@gmail.com">group3 spatial-ai</maintainer>
   <license>TODO: License declaration</license>
 
   <depend>rclpy</depend>
