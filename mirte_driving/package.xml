@@ -3,7 +3,7 @@
 <package format="3">
   <name>mirte_driving_3</name>
   <version>1.0.0</version>
-  <description>Team Member C — navigation/mapping/shuttle ONLY.
+  <description>Navigation/mapping/shuttle ONLY.
     SLAM (slam_toolbox) + Nav2 A&#8596;B marker shuttle: zone_detector finds tag A
     (id 100) and the Zone B pair midpoint (ids 101/102); shuttle_manager drives
     the legs (A at ~1 m + camera fine-alignment, B at ~0.3 m) and exposes the
