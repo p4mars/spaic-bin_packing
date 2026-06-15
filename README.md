@@ -16,8 +16,8 @@ during the mission** — there is no separate mapping phase and no saved map fil
 
 > The project is split across **three packages by role**. This file is the
 > project-level overview; four deeper dives live alongside it:
-> **[README_MAP.md](README_MAP.md)** (mapping) and **[README_NAV.md](README_NAV.md)**
-> (navigation) and **[README_GRASPING.md](README_GRASPING.md)**
+> **[README_MAP.md](README_MAP.md)** (mapping), **[README_NAV.md](README_NAV.md)**
+> (navigation), **[README_GRASPING.md](README_GRASPING.md)**
 > (zone A) and **[README_STACKING.md](README_STACKING.md)**
 > (zone B).
 
