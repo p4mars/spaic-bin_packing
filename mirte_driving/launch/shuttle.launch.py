@@ -153,7 +153,7 @@ def generate_launch_description():
         DeclareLaunchArgument('dock_image_topic',   default_value='/camera/color/image_raw'),
         DeclareLaunchArgument('dock_info_topic',    default_value='/camera/color/camera_info'),
         DeclareLaunchArgument('dock_cmd_vel_topic', default_value='/mirte_base_controller/cmd_vel'),
-        # < 0 → keep marker_navigator's own defaults (approach 0.40 / seek 0.22).
+        # < 0 → keep marker_navigator's own defaults (approach 0.40 / seek 0.22), whatever precision team defined.
         DeclareLaunchArgument('dock_approach_m',    default_value='-1.0'),
         DeclareLaunchArgument('dock_seek_dist',     default_value='-1.0'),
         # Handle grasp at A.  The mirte_perception stack (YOLO) runs ON THE
@@ -288,6 +288,7 @@ def generate_launch_description():
                           [image_topic, TextSubstitution(text='/compressed')]),
                          ('/camera/camera_info', camera_info_topic)]),
 
+      #If provide_sim_tf:=true
         Node(package='tf2_ros', executable='static_transform_publisher',
              arguments=['0', '0', '0', '0', '0', '0', 'base_link', 'base_footprint'],
              output='screen', parameters=[sim],
