@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
 Fast-DDS profile that disables the shared-memory (SHM) transport and uses only
-UDPv4.  The MIRTE boot service (mirte-ros) runs as a systemd service and owns
+UDPv4 (User Datagram Protocol).  The MIRTE boot service (mirte-ros) runs as a systemd service and owns
 its /dev/shm/fastrtps_* segment+lock files; our user-launched nodes then fail to
 open_and_lock those SHM ports ("RTPS_TRANSPORT_SHM ... open_and_lock_file
 failed"), which makes intra-host service calls fail intermittently — e.g. the
