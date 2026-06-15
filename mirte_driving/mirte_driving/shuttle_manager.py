@@ -78,10 +78,6 @@ MODE FLAGS (all launch params; see mission.launch.py for the per-unit defaults)
   turn_at_b                spin 180° after the B adjust before heading back
   → Pure navigation test = all of the above off except the aligns:
     run_zone_detector:=false dock_at_b:=false grasp_at_a:=false arm_mimic:=false
-
-(Heritage note: this began as exploration_manager and reuses its primitives —
-spin via cmd_vel, a straight-line standoff approach, NavigateToPose goals — but
-with none of the survey / box-perception / delivery logic.)
 """
 
 import math
