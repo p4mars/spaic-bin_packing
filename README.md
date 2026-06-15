@@ -154,7 +154,7 @@ during the mission** — there is no separate mapping phase and no saved map fil
 
 ---
 
-## 3. The three packages (and who made what)
+## 3. The three packages 
 
 | Package | Directory | Runs on | Role |
 |---|---|---|---|
@@ -162,7 +162,7 @@ during the mission** — there is no separate mapping phase and no saved map fil
 | **`mirte_placement`** | `src/mirte_placement` | robot | **Zone B**: precise ArUco dock (`marker_navigator`) + box lay-down/stacking (`box_placer`) |
 | **`mirte_perception`** | `src/mirte-ros-packages/mirte_perception` | laptop | **Zone A**: YOLOv8 handle detection (`perception_node`) + visual-servo grasp (`grasp_node`, service `/grasp_handle`) |
 
-Provenance, at a glance (full breakdown in README_MAP §7 and README_NAV §2):
+Provenance, at a glance:
 
 - **Custom project code:** `scan_filter`, `zone_detector`, `shuttle_manager`
   (in `mirte_driving`); `marker_navigator`, `box_placer` (in `mirte_placement`);
