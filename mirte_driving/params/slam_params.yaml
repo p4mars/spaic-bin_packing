@@ -61,3 +61,4 @@ slam_toolbox:
     throttle_scans: 1                # process every scan
 
     debug_logging: false
+    #slam_toolbox only prints important messages: warnings, errors, and key status updates.
