@@ -78,6 +78,25 @@ MODE FLAGS (all launch params; see mission.launch.py for the per-unit defaults)
   turn_at_b                spin 180° after the B adjust before heading back
   → Pure navigation test = all of the above off except the aligns:
     run_zone_detector:=false dock_at_b:=false grasp_at_a:=false arm_mimic:=false
+
+    How the file is laid out (top to bottom)
+Lines	Section	What's there
+94–124	imports + constants	CMD_HZ, TICK_HZ, the align gains/tolerances (ALIGN_KP_*, ALIGN_*_TOL), OCCUPIED
+127–384	__init__	parameters (130–290), TF, all pubs/subs/clients (295–348), state flags (350–375), the two+one timers (377–380)
+387–430	input callbacks + map helpers	_a_cb/_b_cb (cache goals), _map_cb, _has_clearance, _has_los
+431–439	_cmd_cb	the 10 Hz servo dispatcher (spin / align / turn)
+441–526	pose + map geometry	_robot_pose (your "where am I"), _in_map, _clear_distance, _relocate_target (pick a new search vantage)
+528–743	_tick — THE FSM	WAIT_SLAM → SEARCH → SHUTTLE
+746–806	_approach	compute a clear stand-off in front of a zone
+808–888	Nav2 goal lifecycle	_send_goal → _goal_accepted → _goal_done (with the _goal_seq anti-stale logic)
+890–980	arrival orchestration	_start_align, _after_b_arrival, _start_turn/_turn_step/_finish_turn, _after_a_arrival
+992–1016	live Nav2 tuning	_set_inflation, _set_speed
+1017–1084	subprocess spawning (B dock)	_popen, _spawn_dock, _kill_*, _finish_dock — launches mirte_placement via ros2 run
+1086–1128	dock handshake callbacks	_positioned_cb, _backed_up_cb, _turned_cb, _nav_failed_cb
+1130–1202	alignment servo	_align_step (the mecanum P-controller), _finish_align
+1204–1242	grasp at A	_markers_cb, _grasp_done_cb, _finish_grasp
+1244–1292	arm/gripper helpers	_arm_traj, _arm_hold, _gripper, _arm_up, _arm_box
+1293–end	_cancel + main	
 """
 
 import math
