@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
 """
-shuttle_manager.py — the MISSION BRAIN of mirte_driving .
-
-═══════════════════════════════════════════════════════════════════════════════
-ROLE
-═══════════════════════════════════════════════════════════════════════════════
 A finite-state machine that decides WHERE the robot goes and WHEN.  It does NOT
 do SLAM, planning, or obstacle avoidance itself — those belong to slam_toolbox
 and Nav2.  It sits on top of them as a "drive-to-pose client" and adds the three
@@ -16,9 +11,7 @@ fine-alignment servos + the merge hand-offs to the manipulation teams.
                     ──► SHUTTLE (A→B→A→B… legs, each: drive→align→stage)
                     ──► DONE
 
-═══════════════════════════════════════════════════════════════════════════════
-NODES / PROCESSES THIS LINKS TO  (who it talks to, and how)
-═══════════════════════════════════════════════════════════════════════════════
+
   zone_detector (ours, robot or laptop)
         → SUBSCRIBES  /zone_a_pose, /zone_b_pose (PoseStamped, map frame).
           These are the goal positions; without them SEARCH never ends.
@@ -51,9 +44,7 @@ NODES / PROCESSES THIS LINKS TO  (who it talks to, and how)
         → SUBSCRIBES /perception/object_markers (handle detections) and CALLS the
           /grasp_handle (std_srvs/Trigger) service.
 
-═══════════════════════════════════════════════════════════════════════════════
-HARDWARE  ⇄  PUBLISHED RESULT  (the physical chain this node closes)
-═══════════════════════════════════════════════════════════════════════════════
+
   lidar ─► scan_filter ─► slam_toolbox ─► map→odom TF ─┐
                                                        ├─► self._robot_pose()
   base controller ─► odom→base_link TF ────────────────┘     (where am I?)
@@ -68,9 +59,7 @@ HARDWARE  ⇄  PUBLISHED RESULT  (the physical chain this node closes)
 So: real sensors become TF + poses; this node turns those into goals and Twist;
 those become wheel/arm motion — the only OUTPUT that physically moves the robot.
 
-═══════════════════════════════════════════════════════════════════════════════
-MODE FLAGS (all launch params; see mission.launch.py for the per-unit defaults)
-═══════════════════════════════════════════════════════════════════════════════
+
   align_at_a / align_at_b  camera fine-alignment at each zone (NAVIGATION code)
   arm_mimic                the box carry/drop arm poses (no real grasp)
   dock_at_b                spawn mirte_placement at B (precise dock + place)
@@ -79,8 +68,7 @@ MODE FLAGS (all launch params; see mission.launch.py for the per-unit defaults)
   → Pure navigation test = all of the above off except the aligns:
     run_zone_detector:=false dock_at_b:=false grasp_at_a:=false arm_mimic:=false
 
-    How the file is laid out (top to bottom)
-Lines	Section	What's there
+
 94–124	imports + constants	CMD_HZ, TICK_HZ, the align gains/tolerances (ALIGN_KP_*, ALIGN_*_TOL), OCCUPIED
 127–384	__init__	parameters (130–290), TF, all pubs/subs/clients (295–348), state flags (350–375), the two+one timers (377–380)
 387–430	input callbacks + map helpers	_a_cb/_b_cb (cache goals), _map_cb, _has_clearance, _has_los
