@@ -494,4 +494,3 @@ ros2 launch mirte_perception grasp.launch.py                                    
 ros2 topic pub /mirte_base_controller/cmd_vel geometry_msgs/msg/Twist "{}" --once
 ```
 
-Deeper detail: **[README_MAP.md](README_MAP.md)** · **[README_NAV.md](README_NAV.md)**
