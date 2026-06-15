@@ -1,0 +1,23 @@
+# ==============================================================================
+# CAMERA CALIBRATION CONFIGURATION
+# ==============================================================================
+# Set calibration_status to "custom" and fill in your values ONLY after running
+# a proper calibration (e.g. with ros2 run camera_calibration cameracalibrator).
+#
+# When status is "default": data fields are empty → code raises an exception →
+# automatically falls back to the /camera/color/camera_info topic instead.
+# This is the correct behaviour when you have no calibration file yet.
+
+calibration_status: "default"
+
+camera_name: mirte_camera
+
+camera_matrix:
+  rows: 3
+  cols: 3
+  data: []   # when on default, leave empty → triggers fallback to /camera_info topic
+
+distortion_coefficients:
+  rows: 1
+  cols: 5
+  data: []   # when on default, leave empty → triggers fallback to /camera_info topic
