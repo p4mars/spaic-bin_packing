@@ -208,7 +208,7 @@ robot's onboard computer; the robot streams its camera and serves the arm.
 
 ### YOLO models (Zone A)
 Trained weights live in `mirte_perception/models/`:
-`handles_model.pt`, `boxes_model.pt`, `gripper_model.pt`. `grasp.launch.py`
+`handles_model.pt`, `gripper_model.pt`. `grasp.launch.py`
 defaults to that folder; override per-file with `model1_path:=…` etc. if the
 weights are elsewhere.
 
