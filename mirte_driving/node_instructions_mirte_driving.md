@@ -1,51 +1,20 @@
-# Node-Level Instructions for the mapping and navigation portion of the project
+# Node-Level Instructions for driving - Guilherme
 
-
-**Package:** `mirte_driving` · **Nodes:** `scan_filter`, `zone_detector`,
+**Package:** `mirte_driving` · **Nodes:**  `zone_detector`,
 `shuttle_manager` · **Launch files:** `shuttle.launch.py`, `mission.launch.py`,
 `detector.launch.py`.
 
-> Build + source first, in every terminal:
+> Build + source
 > ```bash
 > cd ~/spatial-ai/ws && colcon build --packages-select mirte_driving --symlink-install
 > source install/setup.bash
 > ```
-> Run a single node with `ros2 run mirte_driving <executable> --ros-args -p name:=value …`.
+> Run node `ros2 run mirte_driving <executable> --ros-args -p name:=value …`.
 
 ---
 
-## 1. `scan_filter` — lidar self-return filter  *(MAPPING input)*
 
-**Executable:** `scan_filter.py` · **Node name:** `scan_filter`
-
-**Purpose:** removes the robot's own body/arm from the lidar. When the arm swivels
-into the scan plane (carry pose) its returns land inside the robot's footprint and
-Nav2 reports permanent collision; this node drops returns closer than `min_range`
-and republishes the rest, so SLAM and the costmaps see a clean scan.
-
-**Run standalone:**
-```bash
-ros2 run mirte_driving scan_filter.py --ros-args -p min_range:=0.40
-```
-
-| Subscribes | Type | Notes |
-|---|---|---|
-| `/scan` | `sensor_msgs/LaserScan` | raw lidar; **BEST_EFFORT** QoS (matches the driver) |
-
-| Publishes | Type | Notes |
-|---|---|---|
-| `/scan_filtered` | `sensor_msgs/LaserScan` | copy with returns `< min_range` set to `+inf` |
-
-| Parameter | Default | Meaning |
-|---|---|---|
-| `min_range` | `0.25` | Metres; anything closer becomes "no obstacle". Raise to `0.40` when the arm is in the lidar plane (the mission does). **Must equal `raytrace_min_range` in the Nav2 costmaps.** |
-
-**Depends on:** the lidar driver publishing `/scan`.
-**Verify:** `ros2 topic hz /scan_filtered` and `ros2 topic echo /scan_filtered --once --field range_min`.
-
----
-
-## 2. `zone_detector` — camera → goal poses  *(NAVIGATION input)*
+## `zone_detector` — camera → goal poses  *(NAVIGATION input)*
 
 **Executable:** `zone_detector.py` · **Node name:** `zone_detector`
 
@@ -93,7 +62,7 @@ SLAM** (for the `map ← camera` transform — no transform ⇒ nothing is publi
 
 ---
 
-## 3. `shuttle_manager` — the mission brain (FSM)  *(NAVIGATION)*
+## `shuttle_manager` — the mission brain (FSM)  *(NAVIGATION)*
 
 **Executable:** `shuttle_manager.py` · **Node name:** `shuttle_manager`
 
@@ -219,7 +188,7 @@ and watch the log states `WAIT_SLAM → SEARCH → SHUTTLE`.
 
 ---
 
-## 4. Launch files (how the nodes are started together)
+## Launch files (how the nodes are started together)
 
 You normally start the nodes through a launch file, not one by one.
 
