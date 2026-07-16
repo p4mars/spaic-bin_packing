@@ -1,10 +1,5 @@
-# `mirte_driving` — Node-Level Instructions
+# Node-Level Instructions for the mapping and navigation portion of the project
 
-Per-node reference for the navigation package: what each node **is**, how to **run
-it on its own**, its exact **inputs/outputs**, its **parameters** (with defaults),
-and what must be running for it to work. This complements the system-level
-`README.md` (architecture + mission-level running); here everything is at the level
-of an individual node.
 
 **Package:** `mirte_driving` · **Nodes:** `scan_filter`, `zone_detector`,
 `shuttle_manager` · **Launch files:** `shuttle.launch.py`, `mission.launch.py`,
